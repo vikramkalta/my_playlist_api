@@ -1,0 +1,12 @@
+version: '3.2'
+
+services:
+  web-server:
+    container_name: spetrol_auth
+    restart: always
+    build: ./
+    expose:
+      - '3002'
+    ports:
+      - '3002:3002'
+    network_mode: host
