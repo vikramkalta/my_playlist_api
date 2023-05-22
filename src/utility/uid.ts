@@ -1,4 +1,4 @@
-function uid() {
+function uid(): string {
   let date = new Date().getTime();
   const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxx'.replace(/[xy]/g, c => {
     const r = (date + Math.random() * 16) % 16 | 0;

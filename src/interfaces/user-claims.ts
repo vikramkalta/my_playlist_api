@@ -1,8 +1,8 @@
 import { IAuditInfo } from './audit-info';
 
 export interface IUserClaims {
-  UserId: string;
+  UserId?: string;
   ClaimType: string;
-  ClaimValue: string;
+  ClaimValue?: string;
   AuditInfo?: IAuditInfo;
 }

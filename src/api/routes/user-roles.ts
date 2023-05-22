@@ -8,7 +8,7 @@ import middlewares from '../middlewares';
 const route = Router();
 const log = createBunyanLogger('UserRoleRoutes');
 
-export default (app: Router) => {
+export default (app: Router): void => {
   app.use('/user-role', route);
 
   route.post('/', middlewares.logger, celebrate({
@@ -41,7 +41,7 @@ export default (app: Router) => {
     }
   });
 
-  route.get('/all', middlewares.logger, async (req: Request, res: Response, next: NextFunction) => {
+  route.get('/all', middlewares.logger, async (_req: Request, res: Response, next: NextFunction) => {
     try {
       const userRoleService = new UserRoleService();
       const result = await userRoleService.getUserRoles();

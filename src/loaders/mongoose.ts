@@ -1,19 +1,18 @@
-import { connect } from 'mongoose';
-
+import mongoose, { connect, ConnectOptions, mongo } from 'mongoose';
 import { createBunyanLogger } from './logger';
 
 const log = createBunyanLogger('MongooseLoader');
 
-let clientConnection;
+let clientConnection: mongo.MongoClient;
 
-export default async (): Promise<any> => {
+export default async (): Promise<void> => {
   try {
     // Connect to MongoDB
-    const db: any = await connect(process.env.MONGO_URL, {
+    await connect(process.env.MONGO_URL, ({
       useNewUrlParser: true,
       useUnifiedTopology: true
-    });
-    const client = db.connections[0].client;
+    } as ConnectOptions));
+    const client = mongoose.connection[0].client;
 
     clientConnection = client.db(process.env.MONGO_DB_NAME);
     log.info('connection established');
@@ -23,5 +22,5 @@ export default async (): Promise<any> => {
   }
 };
 
-const getDbInstance = () => clientConnection;
+const getDbInstance = (): mongo.MongoClient => clientConnection;
 export { getDbInstance };

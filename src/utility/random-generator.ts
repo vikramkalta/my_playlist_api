@@ -1,4 +1,4 @@
-export const randomGenerator = () => {
+export const randomGenerator = (): string => {
   let alphabeticString = '';
   const asciiCodeForA = 65;
   const totalAlphabets = 26;

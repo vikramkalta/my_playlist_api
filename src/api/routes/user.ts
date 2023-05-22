@@ -8,7 +8,7 @@ import UserService from '../../services/user';
 const route = Router();
 const log = createBunyanLogger('User routes');
 
-export default (app: Router) => {
+export default (app: Router): void => {
   app.use('/user', route);
 
   route.post('/', middlewares.logger, middlewares.auth, celebrate({

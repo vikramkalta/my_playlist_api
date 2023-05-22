@@ -1,11 +1,10 @@
 import asyncHooks from 'async_hooks';
-// import fs from 'fs';
+import { IChildRequestContext, IRequestContext } from '../interfaces';
 
-const contexts: any = {};
-// const log = str => fs.writeSync(1, `${str}\n`);
+const contexts: IRequestContext = {};
 
 asyncHooks.createHook({
-  init: (asyncId, type, triggerAsyncId) => {
+  init: (asyncId, _type, triggerAsyncId) => {
     // A new resource was created
     // If our parent asyncId already had a context object
     // We assign it to our resource asyncId
@@ -19,11 +18,11 @@ asyncHooks.createHook({
   }
 }).enable();
 
-function getContext(): any {
+function getContext(): IChildRequestContext {
   const asyncId = asyncHooks.executionAsyncId();
   // We try to get the context object linked to our current asyncId
   // If there is none, we return an empty object
-  return contexts[asyncId] || {};
+  return contexts[asyncId] || ({} as IChildRequestContext);
 }
 
 export { contexts, getContext };

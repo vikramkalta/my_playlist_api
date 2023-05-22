@@ -4,7 +4,7 @@ import { createBunyanLogger } from './logger';
 
 const log = createBunyanLogger('Loaders');
 
-export default async ({ expressApp }) => {
+export default async ({ expressApp }): Promise<void> => {
   // Context shall be initialized first
   await mongooseLoader();
   log.info('DB loaded and connected!');

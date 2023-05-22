@@ -5,20 +5,21 @@ import asyncHooks from 'async_hooks';
 
 import routes from '../api';
 import config from '../config';
-import { contexts, getContext } from './context';
-import { slackBot, uid } from '../utility';
+import { contexts } from './context';
+import { uid } from '../utility';
 import { createBunyanLogger } from './logger';
+import { IChildRequestContext } from '../interfaces/request-context';
 
 const log = createBunyanLogger('Express');
 
-export default ({ app }: { app: express.Application }) => {
+export default ({ app }: { app: express.Application }): void => {
   /**
    * Health check endpoints
    */
-  app.get('/status', (req, res) => {
+  app.get('/status', (_req, res) => {
     res.status(200).end();
   });
-  app.head('/status', (req, res) => {
+  app.head('/status', (_req, res) => {
     res.status(200).end();
   });
 
@@ -35,7 +36,7 @@ export default ({ app }: { app: express.Application }) => {
   app.use(cors(corsOptions));
 
   //create a cors middleware
-  app.use((req, res, next) => {
+  app.use((_req, res, next) => {
     //set headers to allow cross origin request.
     res.header("Access-Control-Allow-Origin", "*");
     res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
@@ -52,20 +53,20 @@ export default ({ app }: { app: express.Application }) => {
   app.use(bodyParser.urlencoded({ extended: true }));
 
   // This should come before routes initializer
-  app.use((req, res, next) => {
+  app.use((_req, _res, next) => {
     // We now have a asyncId
     const asyncId = asyncHooks.executionAsyncId();
     // We assign a new empty object as the context of our asyncId
-    contexts[asyncId] = {};
+    contexts[asyncId] = ({} as IChildRequestContext);
     contexts[asyncId].id = uid();
     next();
   });
 
   // Response interceptor
-  app.use((req, res: any, next) => {
+  app.use((req, res, next) => {
     const [oldSend] = [res.send];
 
-    (res.send as unknown) = function (data) {
+    (res.send as unknown) = function (data): void {
 
       if (typeof data === 'string') {
         try {
@@ -90,22 +91,23 @@ export default ({ app }: { app: express.Application }) => {
   app.use(config.api.prefix, routes());
 
   // Catch 404 and forward to error handler
-  app.use((req, res, next) => {
+  app.use((_req, _res, next) => {
     const err = new Error('Not found');
     err['status'] = 404;
     next(err);
   });
 
   // Error handlers
-  app.use((err, req, res, next) => {
+  app.use((err, _req, _res, next) => {
     return next(err);
   });
 
-  app.use((err, req, res, next) => {
-    let _err: any = {};
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  app.use((err, _req, res, _next) => {
+    // let _err: Error = {};
     if (err instanceof Error) {
-      const requestId = getContext().id;
-      _err.text = `Error message: ${err.message} \nError type: ${err.name} \nRequest Id: ${requestId}\nTime: ${(new Date()).toLocaleTimeString()}`;
+      // const requestId = getContext().id;
+      // _err.text = `Error message: ${err.message} \nError type: ${err.name} \nRequest Id: ${requestId}\nTime: ${(new Date()).toLocaleTimeString()}`;
     } else {
       log.error('Format error properly');
     }

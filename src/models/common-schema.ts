@@ -30,19 +30,6 @@ const userClaimSchema = new Schema<IUserClaims>({
   _id: false
 });
 
-const rolePermissionSchema = new Schema({
-  Value: { type: Boolean, default: false },
-  ModuleCode: { type: Number, required: true },
-  Permissions: {
-    Create: { type: Boolean, default: false },
-    Read: { type: Boolean, default: false },
-    Update: { type: Boolean, default: false },
-    Delete: { type: Boolean, default: false },
-  }
-}, {
-  _id: false
-});
-
 const permissionsSchema = new Schema({
   ModuleName: { type: String, required: true },
   ModuleCode: { type: Number, required: true },

@@ -1,11 +1,10 @@
+import { NextFunction } from 'express';
+import { JwtPayload } from 'jsonwebtoken';
 import moment from 'moment';
 
-import { createBunyanLogger } from '../../loaders/logger';
 import { TOKEN_EXPIRY, safePromise, STATUS_CODES, STATUSES, decrypt } from '../../utility';
 
-const log = createBunyanLogger('AuthMiddleware');
-
-const authMiddleware = async (req, res, next) => {
+const authMiddleware = async (req, next): Promise<NextFunction> => {
   try {
     if (!req.headers.authorization) {
       return errorHandler(next);
@@ -23,7 +22,7 @@ const authMiddleware = async (req, res, next) => {
   }
 };
 
-const validateToken = async (token, next) => {
+const validateToken = async (token, next): Promise<JwtPayload> => {
   try {
     const [err, result] = await safePromise(decrypt(token));
 
@@ -44,6 +43,6 @@ const validateToken = async (token, next) => {
   }
 }
 
-const errorHandler = next => next({ message: STATUSES.unauthorized, status: STATUS_CODES[STATUSES.unauthorized] });
+const errorHandler = (next): NextFunction => next({ message: STATUSES.unauthorized, status: STATUS_CODES[STATUSES.unauthorized] });
 
 export { authMiddleware };

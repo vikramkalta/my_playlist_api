@@ -4,7 +4,7 @@ import { https } from './request';
 
 const log = createBunyanLogger('Slackbot');
 
-async function slackBot(data) {
+async function slackBot(data): Promise<void> {
   try {
     const options = {
       headers: {

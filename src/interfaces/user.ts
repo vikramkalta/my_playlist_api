@@ -3,6 +3,7 @@ import { IOwner } from './owner';
 import { IUserClaims } from './user-claims';
 
 export interface IUser {
+  _id?: string;
   Name: string;
   Username: string;
   Mobile?: string;
@@ -12,6 +13,7 @@ export interface IUser {
   Password?: string;
   Salt?: string;
   Owner?: IOwner;
-  Claims?: IUserClaims;
-  AuditInfo?: IAuditInfo
+  Claims?: IUserClaims[];
+  AuditInfo?: IAuditInfo;
+  token?: string;
 }

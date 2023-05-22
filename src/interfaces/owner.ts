@@ -3,5 +3,6 @@ export interface IOwner {
   _id: string;
   Title: string;
   ImageUrl: string;
+  Name: string;
   Email: string;
 }

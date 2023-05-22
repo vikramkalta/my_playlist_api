@@ -1,4 +1,11 @@
-const GET_HTTP_OPTIONS = () => {
+import { IncomingHttpHeaders } from 'http';
+
+interface IHttpOptions {
+  headers: IncomingHttpHeaders;
+  port: number;
+}
+
+const GET_HTTP_OPTIONS = (): IHttpOptions => {
   return {
     headers: {
       'Content-Type': 'application/json',

@@ -1,21 +1,13 @@
-import base64 from 'base64url';
-import crypto, { sign } from 'crypto';
 import fs from 'fs';
 import path from 'path';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
 import { createBunyanLogger } from '../loaders/logger';
+import { IToken } from '../interfaces';
 
-const signatureFunction = crypto.createSign('RSA-SHA256');
-const verifyFunction = crypto.createVerify('RSA-SHA256');
 const log = createBunyanLogger('JWT');
 
-const header = {
-  alg: 'RS256',
-  typ: 'JWT'
-};
-
-const encrypt = payload => {
+const encrypt = (payload): string => {
   try {
     // // The private key without line breakups
     const privKeyPath = path.resolve('id_rsa_priv.pem');
@@ -28,7 +20,7 @@ const encrypt = payload => {
   }
 };
 
-const decrypt = async token => {
+const decrypt = async (token): Promise<IToken> => {
   try {
     token = token.trim();
 
@@ -52,7 +44,7 @@ const decrypt = async token => {
         }
         if (!err) {
           log.info('payload token', payload);
-          return resolve({ signatureIsValid: true, payload });
+          return resolve({ signatureIsValid: true, payload: payload as JwtPayload });
         }
         return reject({
           signatureIsValid: false,

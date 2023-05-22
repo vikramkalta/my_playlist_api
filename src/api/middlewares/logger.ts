@@ -1,3 +1,4 @@
+import { NextFunction } from 'express';
 import { createBunyanLogger } from '../../loaders/logger';
 
 /**
@@ -9,7 +10,7 @@ import { createBunyanLogger } from '../../loaders/logger';
 
 let loggerContext;
 
-const attachLoggerContext = async (req, res, next) => {
+const attachLoggerContext = async (req, next): Promise<NextFunction> => {
 
   const log = createBunyanLogger('Logger-Middleware');
   // TODO: add req url and other necessary details

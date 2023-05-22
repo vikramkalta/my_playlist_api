@@ -9,7 +9,7 @@ import middlewares from '../middlewares';
 const route = Router();
 const log = createBunyanLogger('EmailRoutes');
 
-export default (app: Router) => {
+export default (app: Router): void => {
   app.use('/email', route);
 
   route.get('/verify',
@@ -19,7 +19,7 @@ export default (app: Router) => {
         token: Joi.string().required()
       }).options({ allowUnknown: true })
     }),
-    async (req: Request, res: Response, next: NextFunction) => {
+    async (req: Request, res: Response) => {
       try {
         const emailService = new EmailService();
         const result = await emailService.verifyEmail(req.query);

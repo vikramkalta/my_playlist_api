@@ -6,7 +6,11 @@ import { createBunyanLogger } from '../loaders/logger';
 
 const log = createBunyanLogger('Request logger');
 
-const https = async (options, data, shouldGetRequestId = true, isHttp = false) => {
+interface IResponse {
+  status: number;
+}
+
+const https = async (options, data, shouldGetRequestId = true, isHttp = false): Promise<IResponse> => {
   let _request
   if (isHttp) {
     _request = httpRequest;
@@ -22,7 +26,7 @@ const https = async (options, data, shouldGetRequestId = true, isHttp = false) =
 
   return new Promise((resolve, reject) => {
     const req = _request(options, res => {
-      let response: any = '';
+      let response: string|IResponse = '';
 
       res.on('data', result => {
         response += result.toString();
@@ -31,7 +35,7 @@ const https = async (options, data, shouldGetRequestId = true, isHttp = false) =
       res.on('end', () => {
         try {
           log.info('Response from api:', response);
-          response = JSON.parse(response);
+          response = (JSON.parse((response as string)) as IResponse);
           if (response.status >= 400)
             return reject(response);
           resolve(response);
@@ -57,6 +61,6 @@ const https = async (options, data, shouldGetRequestId = true, isHttp = false) =
 
 export { https };
 
-function handleWriteMethods(options) {
+function handleWriteMethods(options): boolean {
   return ['POST', 'PUT'].includes(options.method) || options.path.includes('/api/v5/otp');
 }
