@@ -1,0 +1,7 @@
+{
+    "name": "Spetrol Auth APIs",
+    "version": "0.1.0",
+    "description": "Manages user authentication and token generation",
+    "title": "Spetrol Auth APIs",
+    "authors": "vikramkalta91@gmail.com"
+}
