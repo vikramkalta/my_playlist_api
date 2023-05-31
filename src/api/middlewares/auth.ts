@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import { TOKEN_EXPIRY, safePromise, STATUS_CODES, STATUSES, decrypt } from '../../utility';
 
-const authMiddleware = async (req, next): Promise<NextFunction> => {
+const authMiddleware = async (req, _res, next): Promise<NextFunction> => {
   try {
     if (!req.headers.authorization) {
       return errorHandler(next);

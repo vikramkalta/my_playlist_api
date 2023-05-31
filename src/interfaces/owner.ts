@@ -1,8 +1,8 @@
 export interface IOwner {
-  Type: string;
+  type: string;
   _id: string;
-  Title: string;
-  ImageUrl: string;
-  Name: string;
-  Email: string;
+  title: string;
+  imageUrl: string;
+  name: string;
+  email: string;
 }

@@ -1,12 +1,12 @@
 export interface IPermission {
-  ModuleName: string;
-  ModuleCode: number;
-  Permissions: Permission;
+  moduleName: string;
+  moduleCode: number;
+  permissions: Permission;
 }
 
 export interface Permission {
-  Created: boolean;
-  Read: boolean;
-  Update: boolean;
-  Delete: boolean;
+  created: boolean;
+  read: boolean;
+  update: boolean;
+  delete: boolean;
 }

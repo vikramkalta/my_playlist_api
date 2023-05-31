@@ -3,7 +3,7 @@ import { createBunyanLogger } from './logger';
 
 const log = createBunyanLogger('MongooseLoader');
 
-let clientConnection: mongo.MongoClient;
+let clientConnection: mongo.Db;
 
 export default async (): Promise<void> => {
   try {
@@ -12,7 +12,8 @@ export default async (): Promise<void> => {
       useNewUrlParser: true,
       useUnifiedTopology: true
     } as ConnectOptions));
-    const client = mongoose.connection[0].client;
+    
+    const client: mongo.MongoClient = mongoose.connections[0].getClient();
 
     clientConnection = client.db(process.env.MONGO_DB_NAME);
     log.info('connection established');
@@ -22,5 +23,5 @@ export default async (): Promise<void> => {
   }
 };
 
-const getDbInstance = (): mongo.MongoClient => clientConnection;
+const getDbInstance = (): mongo.Db => clientConnection;
 export { getDbInstance };

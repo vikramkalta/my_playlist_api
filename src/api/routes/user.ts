@@ -11,18 +11,19 @@ const log = createBunyanLogger('User routes');
 export default (app: Router): void => {
   app.use('/user', route);
 
-  route.post('/', middlewares.logger, middlewares.auth, celebrate({
+  route.post('/', middlewares.logger, celebrate({
     body: Joi.object({
-      FirstName: Joi.string().required(),
-      Email: Joi.string().required(),
-      Role: Joi.string().required(),
-      RequestType: Joi.string().valid('StaffUser', 'Customer').required(),
+      firstName: Joi.string().required(),
+      lastName: Joi.string().required(),
+      username: Joi.string().required(),
+      email: Joi.string().required(),
+      dob: Joi.date().required(),
+      password: Joi.string().required(),
     }).options({ allowUnknown: true })
   }), async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userService = new UserService();
-      req.body.token = req.headers.authorization.split(' ')[1];
-      const result = await userService[`create${req.body.RequestType}`](req.body);
+      const result = await userService.createOrGetUser(req.body);
       return res.send(result);
     } catch (error) {
       log.error('Error in create user route', error);
@@ -30,20 +31,27 @@ export default (app: Router): void => {
     }
   });
 
+  route.post('/username', middlewares.logger, celebrate({
+    body: Joi.object({ username: Joi.string().required() })
+  }), async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userService = new UserService();
+      const result = await userService.checkUsername(req.body);
+      return res.send(result); 
+    } catch (error) {
+      log.error('Error in check username route', error);
+      return next(error);
+    }
+  });
+
   route.put('/', middlewares.logger, middlewares.auth, celebrate({
-    query: Joi.object({
-      UserId: Joi.string().required(),
-    }).options({ allowUnknown: true }),
-    body: Joi.object({
-      RequestType: Joi.string().valid('StaffUser', 'Customer').required(),
-    }).options({ allowUnknown: true }),
+    query: Joi.object({ _id: Joi.string().required() }).options({ allowUnknown: true }),
   }), async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userService = new UserService();
       req.body.token = req.headers.authorization.split(' ')[1];
       req.body.UserId = req.query.UserId;
-      const result = await userService[`update${req.body.RequestType}`](req.body, req.query);
-      // const result = await userService.updateStaffUser(req.body, req.query);
+      const result = await userService.updateUser(req.body, req.query);
       return res.send(result);
     } catch (error) {
       log.error('Error in update user route', error);
@@ -52,11 +60,11 @@ export default (app: Router): void => {
   });
 
   route.get('/', middlewares.logger, celebrate({
-    query: Joi.object({}).options({ allowUnknown: true })
+    query: Joi.object({ email: Joi.string().required() }).options({ allowUnknown: true })
   }), async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userService = new UserService();
-      const result = await userService.getUser(req.query);
+      const result = await userService.getUser(req.query as { email: string });
       return res.send(result);
     } catch (error) {
       log.error('Error in get user route', error);
@@ -75,7 +83,7 @@ export default (app: Router): void => {
       const result = await userService.loginUser(req.body);
       return res.send(result);
     } catch (error) {
-      log.error('Error in create user route', error);
+      log.error('Error in login route', error);
       return next(error);
     }
   });

@@ -4,40 +4,40 @@ import { IAuditInfo, IOwner, IUserClaims } from '../interfaces';
 import { AUTH_USER_ROLES } from '../utility';
 
 const auditSchema = new Schema<IAuditInfo>({
-  CreatedBy: { type: Number },
-  CreatedTime: { type: Date, default: Date.now },
-  UpdatedTime: { type: Date, default: Date.now },
-  Active: { type: Boolean, default: true },
-  Archived: { type: Boolean, default: false }
+  createdBy: { type: Number },
+  createdTime: { type: Date, default: Date.now },
+  updatedTime: { type: Date, default: Date.now },
+  active: { type: Boolean, default: true },
+  archived: { type: Boolean, default: false }
 }, {
   _id: false
 });
 
 const ownerSchema = new Schema<IOwner>({
-  Type: { type: String },
+  type: { type: String },
   _id: { type: String },
-  Name: { type: String },
-  ImageUrl: { type: String },
-  Email: { type: String },
+  name: { type: String },
+  imageUrl: { type: String },
+  email: { type: String },
 }, {
   _id: false
 });
 
 const userClaimSchema = new Schema<IUserClaims>({
-  ClaimType: { type: String, required: true, enum: AUTH_USER_ROLES },
-  ClaimValue: { type: String },
+  claimType: { type: String, required: true, enum: AUTH_USER_ROLES },
+  claimValue: { type: String },
 }, {
   _id: false
 });
 
 const permissionsSchema = new Schema({
-  ModuleName: { type: String, required: true },
-  ModuleCode: { type: Number, required: true },
-  Permissions: {
-    Create: { type: Boolean, default: false },
-    Read: { type: Boolean, default: false },
-    Update: { type: Boolean, default: false },
-    Delete: { type: Boolean, default: false },
+  moduleName: { type: String, required: true },
+  moduleCode: { type: Number, required: true },
+  permissions: {
+    create: { type: Boolean, default: false },
+    read: { type: Boolean, default: false },
+    update: { type: Boolean, default: false },
+    delete: { type: Boolean, default: false },
   }
 });
 

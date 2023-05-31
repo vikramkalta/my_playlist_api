@@ -10,3 +10,4 @@ export * from './retry';
 export * from './messages';
 export * from './get-http-options';
 export * from './random-generator';
+export * from './event-emitter';

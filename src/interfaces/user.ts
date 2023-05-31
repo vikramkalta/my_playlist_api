@@ -4,16 +4,18 @@ import { IUserClaims } from './user-claims';
 
 export interface IUser {
   _id?: string;
-  Name: string;
-  Username: string;
-  Mobile?: string;
-  Email?: string;
-  MobileVerified?: boolean;
-  EmailVerified?: boolean;
-  Password?: string;
-  Salt?: string;
-  Owner?: IOwner;
-  Claims?: IUserClaims[];
-  AuditInfo?: IAuditInfo;
+  firstName: string;
+  lastName: string;
+  username: string;
+  contact?: string;
+  email?: string;
+  dob?: Date;
+  contactVerified?: boolean;
+  emailVerified?: boolean;
+  password?: string;
+  salt?: string;
+  owner?: IOwner;
+  claims?: IUserClaims[];
+  auditInfo?: IAuditInfo;
   token?: string;
 }

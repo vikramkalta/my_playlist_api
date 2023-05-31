@@ -5,31 +5,33 @@ import { ownerSchema, auditSchema, userClaimSchema } from './common-schema';
 import { COLLECTIONS } from '../utility';
 
 const schema = new Schema<IUser>({
-  Name: { type: String, required: true },
-  Username: { type: String },
-  Mobile: { type: String, unique: true },
-  Email: { type: String, unique: true },
-  MobileVerified: { type: Boolean },
-  EmailVerified: { type: Boolean },
-  Password: { type: String },
-  Salt: { type: String },
-  Owner: ownerSchema,
-  Claims: [userClaimSchema],
-  AuditInfo: auditSchema
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  username: { type: String },
+  contact: { type: String, unique: true },
+  email: { type: String, unique: true },
+  dob: { type: Date },
+  contactVerified: { type: Boolean },
+  emailVerified: { type: Boolean },
+  password: { type: String },
+  salt: { type: String },
+  owner: ownerSchema,
+  claims: [userClaimSchema],
+  auditInfo: auditSchema,
 });
 
 schema.pre('save', function (next) {
-  this.AuditInfo = {
-    Active: true,
-    CreatedTime: new Date(),
-    UpdatedTime: new Date(),
-    Archived: false
+  this.auditInfo = {
+    active: true,
+    createdTime: new Date(),
+    updatedTime: new Date(),
+    archived: false,
   };
   next();
 });
 
 schema.pre('updateOne', function () {
-  this.set({ 'AuditInfo.UpdatedTime': new Date() });
+  this.set({ 'auditInfo.updatedTime': new Date() });
 });
 
 const name = COLLECTIONS.USER;

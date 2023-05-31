@@ -1,4 +1,4 @@
-import dotenv from 'dotenv';
+// import dotenv from 'dotenv';
 
 import { createBunyanLogger } from '../loaders/logger';
 
@@ -6,11 +6,11 @@ const log = createBunyanLogger('Config');
 // Set the NODE_ENV to 'development' by default
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 log.info('process.env.NODE_ENV', process.env.NODE_ENV);
-const envFound = dotenv.config();
-if (envFound.error) {
-  // This error should crash whole process
-  throw new Error('Couldn\'t find the .env file');
-}
+// const envFound = dotenv.config();
+// if (envFound.error) {
+//   // This error should crash whole process
+//   throw new Error('Couldn\'t find the .env file');
+// }
 
 export default {
   port: 3002,
