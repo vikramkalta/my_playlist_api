@@ -5,9 +5,9 @@ import { COLLECTIONS } from '../utility';
 import { auditSchema } from './common-schema';
 
 const schema = new Schema<IAppConfig>({
-  AttributeName: { type: String, required: true },
-  AttributeValue: { type: String, required: true },
-  AuditInfo: auditSchema
+  attributeName: { type: String, required: true },
+  attributeValue: { type: String, required: true },
+  auditInfo: auditSchema,
 });
 
 const name = COLLECTIONS.APP_CONFIG;

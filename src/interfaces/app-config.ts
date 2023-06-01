@@ -1,6 +1,6 @@
 import { IAuditInfo } from './audit-info';
 export interface IAppConfig {
-  AttributeName: string;
-  AttributeValue: string;
-  AuditInfo?: IAuditInfo;
+  attributeName: string;
+  attributeValue: string;
+  auditInfo?: IAuditInfo;
 }

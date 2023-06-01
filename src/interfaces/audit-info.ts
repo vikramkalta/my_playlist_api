@@ -1,7 +1,7 @@
 export interface IAuditInfo {
-  CreatedBy?: number;
-  CreatedTime?: Date;
-  UpdatedTime?: Date;
-  Active?: boolean;
-  Archived?: boolean;
+  createdBy?: number;
+  createdTime?: Date;
+  updatedTime?: Date;
+  active?: boolean;
+  archived?: boolean;
 }

@@ -7,4 +7,6 @@ node_modules/
 id_rsa_priv.pem
 id_rsa_pub.pem
 
-.env
+.env*
+
+coverage/

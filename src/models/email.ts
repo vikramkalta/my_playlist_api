@@ -5,22 +5,22 @@ import { auditSchema } from './common-schema';
 import { COLLECTIONS } from '../utility';
 
 const schema = new Schema<IEmail>({
-  Email: { type: String, required: true, unique: true },
-  AuditInfo: auditSchema
+  email: { type: String, required: true, unique: true },
+  auditInfo: auditSchema
 });
 
 schema.pre('save', function (next) {
-  this.AuditInfo = {
-    Active: true,
-    CreatedTime: new Date(),
-    UpdatedTime: new Date(),
-    Archived: false
+  this.auditInfo = {
+    active: true,
+    createdTime: new Date(),
+    updatedTime: new Date(),
+    archived: false,
   };
   next();
 });
 
 schema.pre('updateOne', function () {
-  this.set({ 'AuditInfo.UpdatedTime': new Date() });
+  this.set({ 'auditInfo.updatedTime': new Date() });
 });
 
 const name = COLLECTIONS.EMAIL;

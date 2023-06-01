@@ -3,19 +3,21 @@
   "version": "1.0.0",
   "description": "Auth microservice",
   "main": "index.js",
+  "engines": {
+    "node": ">=16.19.0"
+  },
   "scripts": {
     "tsc": "tsc -p tsconfig.json",
     "doc": "apidoc -i src/api/routes/ -o docs/",
-    "start": "node dist/src/app.js",
+    "start": "npm run build && node dist/src/app.js",
     "clean": "rimraf coverage build tmp",
     "prebuild": "npm run lint",
     "build": "tsc -p tsconfig.json",
     "build:watch": "tsc -w -p tsconfig.json",
     "build:release": "npm run clean && tsc -p tsconfig.release.json",
     "lint": "eslint . --ext .ts --ext .mts",
-    "test": "jest --coverage",
-    "prettier": "prettier --config .prettierrc --write .",
-    "test:watch": "jest --watch"
+    "test": "npm run build && cross-env NODE_ENV=test mocha",
+    "prettier": "prettier --config .prettierrc --write ."
   },
   "author": "vikram kalta",
   "license": "ISC",
@@ -39,16 +41,20 @@
     "@types/express": "^4.17.17",
     "@types/handlebars": "^4.1.0",
     "@types/jsonwebtoken": "^9.0.2",
+    "@types/mocha": "^10.0.1",
     "@types/node": "^20.1.7",
     "@types/nodemailer": "^6.4.7",
-    "@types/jest": "~29.5",
     "@typescript-eslint/eslint-plugin": "~5.59",
     "@typescript-eslint/parser": "~5.59",
+    "chai": "^4.3.7",
+    "chai-http": "^4.3.0",
+    "cross-env": "^7.0.3",
     "eslint": "~8.38",
     "eslint-config-prettier": "~8.8",
-    "eslint-plugin-jest": "~27.2",
-    "jest": "~29.5",
+    "eslint-plugin-jest": "^27.2.1",
+    "mocha": "^10.2.0",
     "prettier": "~2.8",
-    "ts-jest": "~29.1"
+    "supertest": "^6.3.3",
+    "ts-node": "^10.9.1"
   }
 }

@@ -5,28 +5,28 @@ import { AUTH_USER_ROLES, COLLECTIONS } from '../utility';
 import { auditSchema, permissionsSchema } from './common-schema';
 
 const schema = new Schema<IUserRoles>({
-  RoleName: { 
+  roleName: { 
     type: String,
     required: true,
     unique: true,
     enum: AUTH_USER_ROLES
   },
-  Permissions: [permissionsSchema],
-  AuditInfo: auditSchema
+  permissions: [permissionsSchema],
+  auditInfo: auditSchema,
 });
 
 schema.pre('save', function (next) {
-  this.AuditInfo = {
-    Active: true,
-    CreatedTime: new Date(),
-    UpdatedTime: new Date(),
-    Archived: false
+  this.auditInfo = {
+    active: true,
+    createdTime: new Date(),
+    updatedTime: new Date(),
+    archived: false,
   };
   next();
 });
 
 schema.pre('updateOne', function () {
-  this.set({ 'AuditInfo.UpdatedTime': new Date() });
+  this.set({ 'auditInfo.updatedTime': new Date() });
 });
 
 const name = COLLECTIONS.USER_ROLES;
