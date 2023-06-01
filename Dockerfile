@@ -18,4 +18,4 @@ EXPOSE 3002
 
 RUN npm install pm2 -g
 # CMD ["npm","start"]
-CMD ["pm2-runtime", "dist/app.js"]
+CMD ["pm2-runtime", "dist/src/app.js"]
