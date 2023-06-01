@@ -10,9 +10,9 @@ RUN npm install
 
 ADD . /usr/src/app
 
-RUN npm run tsc
+RUN npm run build
 
-ENV NODE_ENV staging
+ENV NODE_ENV development
 
 EXPOSE 3002
 
