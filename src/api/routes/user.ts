@@ -11,6 +11,22 @@ const log = createBunyanLogger('User routes');
 export default (app: Router): void => {
   app.use('/user', route);
 
+  /**
+    * @api {post} /user Register user.
+    * @apiName RegisterUser
+    * @apiGroup User
+    * 
+    * @apiBody {String} firstName        Firstname of the user.
+    * @apiBody {String} lastname         Lastname.
+    * @apiBody {String} username         Unique username of the user.
+    * @apiBody {String} email            Email of the user.
+    * @apiBody {Date} dob                Date of birth object.
+    * @apiBody {String} password         Password for login.
+    * 
+    * @apiSuccess {String} firstname Firstname of the User.
+    * @apiSuccess {String} lastname  Lastname of the User.
+    * @apiSuccess {String} _id Id of the User.
+   */
   route.post('/', middlewares.logger, celebrate({
     body: Joi.object({
       firstName: Joi.string().required(),
@@ -31,6 +47,15 @@ export default (app: Router): void => {
     }
   });
 
+  /**
+    * @api {post} /user/username Check username.
+    * @apiName CheckUsername
+    * @apiGroup User
+    * 
+    * @apiBody {String} username         Unique username of the user.
+    * 
+    * @apiSuccess {Boolean} success Whether the user exists or not.
+   */
   route.post('/username', middlewares.logger, celebrate({
     body: Joi.object({ username: Joi.string().required() })
   }), async (req: Request, res: Response, next: NextFunction) => {
