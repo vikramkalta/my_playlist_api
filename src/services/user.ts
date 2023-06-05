@@ -28,9 +28,11 @@ export default class UserService {
     data.salt = salt;
     data.password = hash;
     const newUser: IUser = await User.model.create(data);
+    const { token } = this.createAuthToken({ email: data.email, role: data.claims[0].claimType });
     delete data.password;
     delete data.salt;
     this._sendEmail(data);
+    newUser.token = token;
     return newUser;
   }
 
@@ -54,22 +56,21 @@ export default class UserService {
       throw { message: 'User not found.', status: STATUS_CODES[STATUSES.notFound] };
     }
 
-    const isPasswordValid = this._decryptPassword(data.Password, result.password, result.salt);
+    const isPasswordValid = this._decryptPassword(data.password, result.password, result.salt);
     if (!isPasswordValid) {
       throw { message: STATUSES.unauthorized, status: STATUS_CODES[STATUSES.unauthorized] };
     }
 
     const dataToEncrypt = {
-      Email: data.Email,
-      // Claims: result.Claims,
-      // Role: result.Claims[0].ClaimType,
-      StaffId: result._id,
+      email: data.email,
+      // claims: result.claims,
+      // role: result.claims[0].claimType,
     };
     const { token } = this.createAuthToken(dataToEncrypt);
-    // delete result.Password;
-    // delete result.Salt;
-    // delete result.Claims;
-    // delete result.Owner;
+    // delete result.password;
+    // delete result.salt;
+    // delete result.claims;
+    // delete result.owner;
     return { ...result, token };
   }
 

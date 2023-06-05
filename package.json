@@ -8,7 +8,7 @@
   },
   "scripts": {
     "tsc": "tsc -p tsconfig.json",
-    "doc": "apidoc -i src/api/routes/ -o docs/",
+    "doc": "npx apidoc -i src/api/routes/ -o docs/",
     "start": "npm run build && node dist/src/app.js",
     "clean": "rimraf coverage build tmp",
     "prebuild": "npm run lint",

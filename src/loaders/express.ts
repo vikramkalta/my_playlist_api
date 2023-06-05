@@ -35,6 +35,8 @@ export default ({ app }: { app: express.Application }): void => {
   }
   app.use(cors(corsOptions));
 
+  app.use('/docs', express.static('docs'));
+
   //create a cors middleware
   app.use((_req, res, next) => {
     //set headers to allow cross origin request.
