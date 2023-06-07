@@ -12,6 +12,8 @@ ADD . /usr/src/app
 
 RUN npm run build
 
+RUN npm run doc
+
 ENV NODE_ENV development
 
 EXPOSE 3002

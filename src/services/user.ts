@@ -20,18 +20,18 @@ interface IHashResult {
 
 export default class UserService {
   public async createOrGetUser(data: IUser): Promise<IUser> {
-    const user = await User.model.findOne({ $or: [{ email: data.email }, { userName: data.username }] });
+    const user = await User.model.findOne({ $or: [{ email: data.email }, { username: data.username }] });
     if (user) {
       throw { message: STATUSES.badRequest + ' (User with same email already exists)', status: STATUS_CODES[STATUSES.badRequest] };
     }
     const { hash, salt } = this._encryptPassword(data.password);
     data.salt = salt;
     data.password = hash;
-    const newUser: IUser = await User.model.create(data);
-    const { token } = this.createAuthToken({ email: data.email, role: data.claims[0].claimType });
-    delete data.password;
-    delete data.salt;
-    this._sendEmail(data);
+    const newUser: IUser = (await User.model.create(data)).toObject();
+    const { token } = this.createAuthToken({ email: data.email });
+    delete newUser.password;
+    delete newUser.salt;
+    this._sendEmail(newUser);
     newUser.token = token;
     return newUser;
   }
@@ -67,10 +67,10 @@ export default class UserService {
       // role: result.claims[0].claimType,
     };
     const { token } = this.createAuthToken(dataToEncrypt);
-    // delete result.password;
-    // delete result.salt;
-    // delete result.claims;
-    // delete result.owner;
+    delete result.password;
+    delete result.salt;
+    delete result.claims;
+    delete result.owner;
     return { ...result, token };
   }
 

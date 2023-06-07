@@ -8,7 +8,7 @@ const schema = new Schema<IUser>({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   username: { type: String },
-  contact: { type: String, unique: true },
+  contact: { type: String },
   email: { type: String, unique: true },
   dob: { type: Date },
   contactVerified: { type: Boolean },

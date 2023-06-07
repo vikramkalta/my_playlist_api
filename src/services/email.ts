@@ -66,26 +66,26 @@ export default class EmailService {
     return user;
   }
 
-  public async sendWelcomeEmail(data): Promise<void> {
+  public async sendWelcomeEmail(_data): Promise<void> {
     try {
       // const appConfig = global[GLOBAL_APP_CONFIG_KEY];
       // Open template file
-      const rootDir = process.cwd();
-      const source = readFileSync(join(rootDir, 'email-templates', 'reset-password.hbs'), 'utf-8');
-      const template = compile(source);
+      // const rootDir = process.cwd();
+      // const source = readFileSync(join(rootDir, 'email-templates', 'reset-password.hbs'), 'utf-8');
+      // const template = compile(source);
       // Send mail with defined transport object
-      const info = await transporter.sendMail({
-        from: `"Tradeoptima support"<${process.env.SUPPORT_MAIL}>`,
-        to: data.Email,
-        subject: 'Welcome email',
-        html: template({
-          firstName: data.Name,
-          loginEmail: data.Email,
-          loginPassword: data.Password,
-          resetPassword: `${process.env.RESET_PASSWORD_LINK}`
-        })
-      });
-      log.info('Send welcome email sent:', info.messageId);
+      // const info = await transporter.sendMail({
+      //   from: `"Tradeoptima support"<${process.env.SUPPORT_MAIL}>`,
+      //   to: data.Email,
+      //   subject: 'Welcome email',
+      //   html: template({
+      //     firstName: data.Name,
+      //     loginEmail: data.Email,
+      //     loginPassword: data.Password,
+      //     resetPassword: `${process.env.RESET_PASSWORD_LINK}`
+      //   })
+      // });
+      // log.info('Send welcome email sent:', info.messageId);
     } catch (error) {
       log.error('Send welcome email error', error);
       throw error;
