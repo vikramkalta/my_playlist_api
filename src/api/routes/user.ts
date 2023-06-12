@@ -23,9 +23,20 @@ export default (app: Router): void => {
     * @apiBody {Date} dob                Date of birth object.
     * @apiBody {String} password         Password for login.
     * 
-    * @apiSuccess {String} firstname Firstname of the User.
-    * @apiSuccess {String} lastname  Lastname of the User.
-    * @apiSuccess {String} _id Id of the User.
+    * @apiSuccess {Boolean} success Determines the status of an API.
+    * @apiSuccess {Object} data Data object holding main response data.
+    * @apiSuccess {Number} data._id User's ID.
+    * @apiSuccess {String} data.token Auth token.
+    *
+    * @apiSuccessExample {json} Success Response:
+    *     HTTP/1.1 200 OK
+    *     {
+    *         "success": true,
+    *         "data": {
+    *             "_id": "123",
+    *             "token": "token123"
+    *         }
+    *     }
    */
   route.post('/', middlewares.logger, celebrate({
     body: Joi.object({
@@ -52,9 +63,20 @@ export default (app: Router): void => {
     * @apiName CheckUsername
     * @apiGroup User
     * 
-    * @apiBody {String} username         Unique username of the user.
+    * @apiBody {String} username Unique username of the user.
     * 
-    * @apiSuccess {Boolean} success Whether the user exists or not.
+    * @apiSuccess {Boolean} success Determines the status of an API.
+    * @apiSuccess {Object} data Data object holding main response data.
+    * @apiSuccess {Boolean} data.success Determines whether username exists or not.
+    *
+    * @apiSuccessExample {json} Success Response:
+    *     HTTP/1.1 200 OK
+    *     {
+    *         "success": true,
+    *         "data": {
+    *             "exists": false
+    *         }
+    *     }
    */
   route.post('/username', middlewares.logger, celebrate({
     body: Joi.object({ username: Joi.string().required() })

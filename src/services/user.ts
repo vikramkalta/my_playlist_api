@@ -37,12 +37,12 @@ export default class UserService {
   }
 
   // User with same username should not exist.
-  public async checkUsername(data: IUser): Promise<{ success: boolean }> {
+  public async checkUsername(data: IUser): Promise<{ exists: boolean }> {
     const user = await User.model.findOne({ username: data.username });
     if (user) {
       throw { message: STATUSES.badRequest + ' (Username already exists)', status: STATUS_CODES[STATUSES.badRequest] };
     }
-    return { success: true };
+    return { exists: false };
   }
 
   public async getUser(filter: { email: string }): Promise<IUser> {
