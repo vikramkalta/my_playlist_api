@@ -91,14 +91,38 @@ export default (app: Router): void => {
     }
   });
 
+  /**
+    * @api {put} /user Update user.
+    * @apiName UpdateUser
+    * @apiGroup User
+    * 
+    * @apiBody {String} firstName        Optional Firstname of the user.
+    * @apiBody {String} lastname         Optional Lastname.
+    * @apiBody {String} username         Optional Unique username of the user.
+    * @apiBody {Date} dob                Optional Date of birth object.
+    * 
+    * @apiSuccess {Boolean} success Determines the status of an API.
+    * @apiSuccess {Object} data Data object holding main response data.
+    * @apiSuccess {Boolean} data.success Determines operation's result.
+    *
+    * @apiSuccessExample {json} Success Response:
+    *     HTTP/1.1 200 OK
+    *     {
+    *         "success": true,
+    *         "data": {
+    *             "success": true
+    *         }
+    *     }
+   */
   route.put('/', middlewares.logger, middlewares.auth, celebrate({
-    query: Joi.object({ _id: Joi.string().required() }).options({ allowUnknown: true }),
+    body: Joi.object({ _id: Joi.string().required() }).options({ allowUnknown: true }),
   }), async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userService = new UserService();
       req.body.token = req.headers.authorization.split(' ')[1];
-      req.body.UserId = req.query.UserId;
-      const result = await userService.updateUser(req.body, req.query);
+      delete req.body.email; // just in case
+      delete req.body.password; // same as above
+      const result = await userService.updateUser({ _id: req.body._id }, req.body);
       return res.send(result);
     } catch (error) {
       log.error('Error in update user route', error);
@@ -106,9 +130,32 @@ export default (app: Router): void => {
     }
   });
 
-  route.get('/', middlewares.logger, celebrate({
-    query: Joi.object({ email: Joi.string().required() }).options({ allowUnknown: true })
-  }), async (req: Request, res: Response, next: NextFunction) => {
+  /**
+    * @api {get} /user Get user.
+    * @apiName GetUser
+    * @apiGroup User
+    * 
+    * @apiBody {String} firstName        Optional Firstname of the user.
+    * @apiBody {String} lastname         Optional Lastname.
+    * @apiBody {String} username         Optional Unique username of the user.
+    * @apiBody {Date} dob                Optional Date of birth object.
+    * 
+    * @apiSuccess {Boolean} success Determines the status of an API.
+    * @apiSuccess {Object} data Data object holding main response data.
+    * @apiSuccess {Boolean} data.success Determines operation's result.
+    *
+    * @apiSuccessExample {json} Success Response:
+    *     HTTP/1.1 200 OK
+    *     {
+    *         "success": true,
+    *         "data": {
+    *             "firstName": "Test",
+    *             "lastname": "Test",
+    *             "username": "test123"
+    *         }
+    *     }
+   */
+  route.get('/', middlewares.logger, async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userService = new UserService();
       const result = await userService.getUser(req.query as { email: string });
@@ -121,8 +168,8 @@ export default (app: Router): void => {
 
   route.post('/login', middlewares.logger, celebrate({
     body: Joi.object({
-      Email: Joi.string().required(),
-      Password: Joi.string().required(),
+      email: Joi.string().required(),
+      password: Joi.string().required(),
     }).options({ allowUnknown: true })
   }), async (req: Request, res: Response, next: NextFunction) => {
     try {

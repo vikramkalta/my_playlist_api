@@ -45,13 +45,13 @@ export default class UserService {
     return { exists: false };
   }
 
-  public async getUser(filter: { email: string }): Promise<IUser> {
-    const user = await User.model.findOne({ email: filter.email, 'auditInfo.active': true }).lean();
+  public async getUser(filter: { email: string, _id?: string }): Promise<IUser> {
+    const user = await User.model.findOne({ $or: [{ email: filter.email }, { _id: filter._id }], 'auditInfo.active': true }).lean();
     return user;
   }
 
   public async loginUser(data): Promise<IUser> {
-    const result: IUser = await User.model.findOne({ Email: data.Email, 'AuditInfo.Active': true }).lean();
+    const result: IUser = await User.model.findOne({ email: data.email, 'auditInfo.active': true }).lean();
     if (!result) {
       throw { message: 'User not found.', status: STATUS_CODES[STATUSES.notFound] };
     }
