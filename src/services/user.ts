@@ -4,10 +4,7 @@ import crypto from 'crypto';
 import { User } from '../models';
 import { encrypt, STATUSES, STATUS_CODES } from '../utility';
 import EmailService from './email';
-// import { createBunyanLogger } from '../loaders/logger';
 import { IUser } from '../interfaces/user';
-
-// const log = createBunyanLogger('UserService');
 
 interface ITokenResult {
   token: string;

@@ -10,7 +10,8 @@ export default async (): Promise<void> => {
     // Connect to MongoDB
     await connect(process.env.MONGO_URL, ({
       useNewUrlParser: true,
-      useUnifiedTopology: true
+      useUnifiedTopology: true,
+      dbName: process.env.MONGO_DB_NAME,
     } as ConnectOptions));
     
     const client: mongo.MongoClient = mongoose.connections[0].getClient();
