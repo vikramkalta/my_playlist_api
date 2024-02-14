@@ -1,6 +1,7 @@
 import { IAuditInfo } from './audit-info';
 
-export interface IEmail {
-  email: string;
+export interface ITrack {
+  _id?: string;
+  trackUrl: string;
   auditInfo?: IAuditInfo;
 }

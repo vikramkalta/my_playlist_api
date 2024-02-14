@@ -9,6 +9,6 @@ export default async ({ expressApp }): Promise<void> => {
   await mongooseLoader();
   log.info('DB loaded and connected!');
 
-  await expressLoader({ app: expressApp });
+  expressLoader({ app: expressApp });
   log.info('Express loaded');
 };

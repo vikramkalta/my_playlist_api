@@ -2,7 +2,6 @@ import express from 'express';
 import dotenv from 'dotenv';
 
 import loaders from './loaders';
-import { eventEmitter } from './utility';
 
 import config from './config';
 import { createBunyanLogger } from './loaders/logger';
@@ -30,7 +29,6 @@ async function startServer(): Promise<void> {
     🛡️  Server listening on port: ${config.port} 🛡️ 
     ################################################
     `);
-    eventEmitter.emit('APP_STARTED');
   });
 }
 

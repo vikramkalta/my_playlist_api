@@ -1,12 +1,12 @@
 import { model as _model, Schema } from 'mongoose';
 
-import { IEmail } from '../interfaces';
+import { ITrack } from '../interfaces';
 import { auditSchema } from './common-schema';
-import { COLLECTIONS } from '../utility';
+import { COLLECTIONS } from '../utility/index';
 
-const schema = new Schema<IEmail>({
-  email: { type: String, required: true, unique: true },
-  auditInfo: auditSchema
+const schema = new Schema<ITrack>({
+  trackUrl: { type: String, required: true },
+  auditInfo: auditSchema,
 });
 
 schema.pre('save', function (next) {
@@ -23,7 +23,7 @@ schema.pre('updateOne', function () {
   this.set({ 'auditInfo.updatedTime': new Date() });
 });
 
-const name = COLLECTIONS.EMAIL;
+const name = COLLECTIONS.TRACK;
 const model = _model(name, schema);
 
 export {

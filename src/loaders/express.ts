@@ -1,14 +1,10 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import asyncHooks from 'async_hooks';
 
 import routes from '../api';
 import config from '../config';
-import { contexts } from './context';
-import { uid } from '../utility';
 import { createBunyanLogger } from './logger';
-import { IChildRequestContext } from '../interfaces/request-context';
 
 const log = createBunyanLogger('Express');
 
@@ -35,7 +31,7 @@ export default ({ app }: { app: express.Application }): void => {
   }
   app.use(cors(corsOptions));
 
-  app.use('/auth/docs', express.static('docs'));
+  app.use('/api/docs', express.static('docs'));
 
   //create a cors middleware
   app.use((_req, res, next) => {
@@ -46,23 +42,9 @@ export default ({ app }: { app: express.Application }): void => {
     next();
   });
 
-  // Some sauce that always add since 2014
-  // Lets you use HTTP verbs such as PUT or DELETE in places where client doesnt support it.
-  // app.use(require())
-
   // Middleware that transforms the raw string of req.body into json
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
-
-  // This should come before routes initializer
-  app.use((_req, _res, next) => {
-    // We now have a asyncId
-    const asyncId = asyncHooks.executionAsyncId();
-    // We assign a new empty object as the context of our asyncId
-    contexts[asyncId] = ({} as IChildRequestContext);
-    contexts[asyncId].id = uid();
-    next();
-  });
 
   // Response interceptor
   app.use((req, res, next) => {
@@ -106,12 +88,8 @@ export default ({ app }: { app: express.Application }): void => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   app.use((err, _req, res, _next) => {
-    // let _err: Error = {};
     if (err instanceof Error) {
-      // const requestId = getContext().id;
-      // _err.text = `Error message: ${err.message} \nError type: ${err.name} \nRequest Id: ${requestId}\nTime: ${(new Date()).toLocaleTimeString()}`;
-    } else {
-      log.error('Format error properly');
+      log.error('Error: ', err);
     }
     // slackBot(_err); // Post error notification on slack
     res.status(err.status || 500);

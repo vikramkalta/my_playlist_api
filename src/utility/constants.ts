@@ -1,8 +1,3 @@
-const MAX_LIMIT = 10;
-const OTP_EXPIRY = 1200; // Seconds;
-const TOKEN_EXPIRY = 60000; // Seconds
-const TOKEN_EXPIRY_EMAIL_VERIFY = 43200;
-
 const STATUSES = {
   ok: 'OK',
   created: 'Created',
@@ -49,39 +44,12 @@ const STATUS_CODES = {
   [STATUSES.gatewayTimeout]: 504
 };
 
-const GLOBAL_APP_CONFIG_KEY = 'APP_CONFIG';
-
 const COLLECTIONS = {
-  APP_CONFIG: 'app_config',
-  USER: 'user',
-  USER_CLAIMS: 'user_claims',
-  OTP: 'otp',
-  EMAIL: 'email',
-  USER_ROLES: 'user_roles',
-  CONTACT_US: 'contact_us',
+  TRACK: 'track',
 };
-
-const USER_ROLES = {
-  customer: 'Individual',
-  driver: 'Driver',
-  B2B: 'B2B',
-  B2C: 'B2C'
-};
-
-const REFERRAL_CONVERSIONS_COUNT = 5;
-
-const AUTH_USER_ROLES = ['Customer', 'Driver', 'Staff', 'Admin'];
 
 export {
-  MAX_LIMIT,
-  OTP_EXPIRY,
-  TOKEN_EXPIRY,
-  TOKEN_EXPIRY_EMAIL_VERIFY,
   STATUSES,
   STATUS_CODES,
-  GLOBAL_APP_CONFIG_KEY,
   COLLECTIONS,
-  REFERRAL_CONVERSIONS_COUNT,
-  USER_ROLES,
-  AUTH_USER_ROLES
 };

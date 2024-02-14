@@ -1,9 +1,7 @@
 import { createLogger } from 'bunyan';
 
-import { getContext } from './context';
-
 const env = process.env.NODE_ENV;
-const createBunyanLogger = (loggerName: string, skipContext?: boolean): ILogObject => {
+const createBunyanLogger = (loggerName: string): ILogObject => {
   const logLevelObj = {
     testing: 'warn',
     production: 'info'
@@ -18,12 +16,7 @@ const createBunyanLogger = (loggerName: string, skipContext?: boolean): ILogObje
 
   const constructLogObj = (level: string): InnerConstructLogFunction => {
     return (...args) => {
-      // const context = getContext();
-      if (skipContext) {
-        logger[level](...args);
-      } else {
-        logger[level]({ ...args, requestId: getContext().id });
-      }
+      logger[level](...args);
     };
   };
 
